@@ -1,0 +1,51 @@
+<button class="btn btn-primary addButton mb-1" (click)="isNewBookOpen=true;addButtonHidden=true;"
+  [hidden]="addButtonHidden">ADD NEW
+  BOOK</button>
+<div class="row mb-1" [hidden]="!isNewBookOpen">
+  <div class="col-md-12 grid-margin">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Add New Book</h4>
+      </div>
+      <div class="card-body">
+        <form ngNativeValidate (ngSubmit)="base64();reset.click()">
+          <div class="row">
+            <div class="col-md-4">
+              <h5>Choose A Departmant</h5>
+              <p-dropdown [options]="departmant" [(ngModel)]="selectedDepartmant" placeholder="Select a Departmant"
+                optionLabel="departmantName" optionValue="departmantName" (onChange)="selectedd()"
+                [ngModelOptions]="{standalone: true}">
+              </p-dropdown>
+            </div>
+            <div class="col-md-4">
+              <h5>Book Name</h5>
+              <input type="text" [(ngModel)]="newBookName" pInputText [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-md-4">
+              <h5>Writer Name</h5>
+              <input type="text" [(ngModel)]="newWriterName" pInputText [ngModelOptions]="{standalone: true}"
+                #inputWriter>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 pl-2 pr-2">
+              <button class="btn btn-secondary mt-5" type="button" (click)="file.click()">Photo Upload</button>
+              <label *ngIf="fileName">{{this.fileName}}</label>
+              <input #file type="file" (change)="onFileSelected($event);" multiple="false" id="file" accept=".png"
+                style="display:none">
+            </div>
+            <div class="col-md-8 pl-2 pr-2">
+              <div style="float: right;">
+                <button class="btn btn-success mt-5 " type="submit"
+                  style="display: inline-block;margin-right: 5px;">Create A New
+                  Book</button>
+                <button #reset class="btn btn-danger mt-5 ml-2 mr-2" type="reset" style="display: inline-block;"
+                  (click)="cancelButton();fileName='';isFileName=false;">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

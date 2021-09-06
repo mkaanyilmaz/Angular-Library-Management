@@ -1,0 +1,106 @@
+<p-table [value]="books" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>BooksName</th>
+      <th>Writer</th>
+      <th>InStock</th>
+      <th>Departmant</th>
+      <th>Options</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-books>
+    <tr>
+      <td>{{books.BookName}}</td>
+      <!-- <td><img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.name" width="100"
+          class="p-shadow-4" /></td> -->
+      <td>{{books.Writer}}</td>
+      <td><span *ngIf="books.InStock == true">Exist</span><span *ngIf="books.InStock == false">Not Exist</span>
+      </td>
+      <td>{{books.Departmant}}</td>
+      <button (click)=" deleteBookPermission(books.id)" type="button" class="btn btn-outline-primary btn-icon-text mt-2"
+        [ngbTooltip]="'Delete'">
+        <i class="pi pi-times"></i>
+      </button>
+      <button (click)="showBook(books)" type="button" class="btn btn-outline-primary btn-icon-text mt-2"
+        style="margin-left: 1rem;" [ngbTooltip]="'Edit'">
+        <i class="pi pi-eye"></i>
+      </button>
+      <button (click)="editBooks(books)" type="button" class="btn btn-outline-primary btn-icon-text mt-2"
+        style="margin-left: 1rem;" [ngbTooltip]="'Edit'">
+        <i class="pi pi-pencil"></i>
+      </button>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    <div class="p-d-flex p-ai-center p-jc-between">
+      In total there are {{books ? books.length : 0 }} books.
+    </div>
+  </ng-template>
+</p-table>
+
+
+<!-- Kitap Düzenle -->
+<p-dialog header="Change Book" [(visible)]="displayModalEdit" [modal]="true" [style]="{width: '50vw'}"
+  [baseZIndex]="10000">
+  <form ngNativeValidate (ngSubmit)="updateBook();resetDialog.click()">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>Book Name</h5>
+        <input type="text" [(ngModel)]="newBookName" pInputText [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="col-md-4">
+        <h5>Writer Name</h5> <input type="text" [(ngModel)]="newWriterName" pInputText
+          [ngModelOptions]="{standalone: true}" #inputWriter>
+      </div>
+      <div class="col-md-4">
+        <h5>Choose A Departmant</h5>
+        <p-dropdown [options]="departmant" [(ngModel)]="selectedDepartmant" placeholder="Select a Departmant"
+          optionLabel="departmantName" optionValue="departmantName" [ngModelOptions]="{standalone: true}">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div style="float: right;">
+          <button class="btn btn-success mt-5" style="margin-right: 100px;" type="submit">
+            Change Book</button>
+          <button #resetDialog class=" btn btn-danger mt-5 ml-2 mr-2" type="reset"
+            style="display: none;;">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="displayModal=false" label="Kapat" styleClass="p-button-text">
+    </p-button>
+  </ng-template>
+</p-dialog>
+
+
+
+
+<!-- Kitap Önizle -->
+<p-dialog header="Book" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000">
+  <div style="height: 500px;">
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <img src="{{this.base64Image}}" width="400" height="350" alt="">
+      </div>
+      <div class="col-md-6">
+        <h5>
+          Book Name : {{this.showDialogBooksName}}
+        </h5>
+        <h5>
+          Departmant Name : {{this.showDialogDepartmant}}
+        </h5>
+        <h5>
+          Writer Name : {{this.showDialogWriter}}
+        </h5>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="displayModal=false" label="Kapat" styleClass="p-button-text">
+    </p-button>
+  </ng-template>
+</p-dialog>
